@@ -4,4 +4,5 @@ Tracks all hits and writes to a csv in the same directory passed in to save sear
 
 ## USAGE
 python3 <this project> <path to directory of files to search> <keywords to search for; space seperated>
+
 python3 /Users/jack/main.py /Users/jack/records 'Jack Sanders' 'November' '14' '1998'
