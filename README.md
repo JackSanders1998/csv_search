@@ -1,5 +1,6 @@
 # csv_search
 Gets all CSVs in a directory and searches for all keywords across the files.
+
 Tracks all hits and writes to a csv in the same directory passed in to save search results.
 
 ## USAGE
