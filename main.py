@@ -16,6 +16,8 @@ python3 /Users/jack/main.py /Users/jack/records 'Jack Sanders' 'November' '14' '
 def main(args):
     # gather user input
     dir_list = os.listdir(args[1])
+    # filter out hidden files
+    dir_list = [file for file in dir_list if not file.startswith('.')]
     keyword_list_raw = args[2:]
     # format keywords to be passed into str.contains
     keywords = ""
@@ -31,18 +33,23 @@ def main(args):
     # loop through files in the directory the user passed in
     for file in dir_list:
         # create the dataframe
-        df = pd.read_csv(f"{args[1]}/{file}", engine='python', encoding='utf-8', on_bad_lines='skip')
-        cols = list(df.columns.values)
+        try:
+            print(f"creating {args[1]}/{file} dataframe")
+            df = pd.read_csv(f"{args[1]}/{file}", engine='python', encoding='utf-8', on_bad_lines='skip')
+            cols = list(df.columns.values)
 
-        print(f"searching {args[1]}/{file} with {len(cols)} columns")
+            print(f"searching {args[1]}/{file} with {len(cols)} columns")
 
-        # loop through columns in the dataframe
-        for col in cols:
-            # search for keywords
-            search = df[df[col].astype(str).str.lower().str.contains(keywords, na=False)]
-            if not search.empty:
-                print(search)
-                frames.append(search)
+            # loop through columns in the dataframe
+            for col in cols:
+                # search for keywords
+                search = df[df[col].astype(str).str.lower().str.contains(keywords, na=False)]
+                if not search.empty:
+                    print(search)
+                    frames.append(search)
+        except UnicodeWarning:
+            continue
+
     search_results = pd.concat(frames)
     search_results.to_csv(f"{args[1]}/search_results.csv")
 
