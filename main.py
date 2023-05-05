@@ -50,7 +50,10 @@ def main(args):
         except UnicodeWarning:
             continue
 
-    search_results = pd.concat(frames)
+    if len(frames) > 0:
+        search_results = pd.concat(frames)
+    else:
+        search_results = frames[0]
     search_results.to_csv(f"{args[1]}/search_results.csv")
 
 
