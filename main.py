@@ -43,7 +43,7 @@ def main(args):
             # loop through columns in the dataframe
             for col in cols:
                 # search for keywords
-                search = df[df[col].astype(str).str.lower().str.contains(keywords, na=False)]
+                search = df[df[col].astype(str).str.lower().str.contains(keywords, na=False) & df["BorrowerState"] == "IL"]
                 if not search.empty:
                     print(search)
                     frames.append(search)
