@@ -43,20 +43,19 @@ def main(args):
             # loop through columns in the dataframe
             for col in cols:
                 # search for keywords
-                search = df[df[col].astype(str).str.lower().str.contains(keywords, na=False) & df["BorrowerState"] == "IL"]
+                search = df[df[col].astype(str).str.lower().str.contains(keywords, na=False)]
                 if not search.empty:
                     print(search)
                     frames.append(search)
         except UnicodeWarning:
             continue
 
-    if len(frames) > 1:
-        search_results = pd.concat(frames)
-    elif len(frames == 1):
-        search_results = frames[0]
-    else:
-        return
+    search_results = pd.concat(frames)
     search_results.to_csv(f"{args[1]}/search_results.csv")
+
+    df = pd.read_csv(f"{args[1]}/search_results.csv")
+    filtered_search = df[df["BorrowerState"] == "IL"]
+    filtered_search.to_csv(f"{args[1]}/filtered_results.csv")
 
 
 if __name__ == "__main__":
